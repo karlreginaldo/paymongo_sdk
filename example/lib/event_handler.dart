@@ -39,8 +39,8 @@ mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
       amount: _amount.toDouble(),
       currency: 'PHP',
       redirect: Redirect(
-        success: "https://$url/success",
-        failed: "https://$url/failed",
+        success: "https://${url}success",
+        failed: "https://${url}failed",
       ),
       billing: billing,
     );
@@ -171,8 +171,8 @@ mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
       amount: _amount.toDouble(),
       currency: 'PHP',
       redirect: Redirect(
-        success: "${url}/success",
-        failed: "${url}/failed",
+        success: "${url}success",
+        failed: "${url}failed",
       ),
       billing: billing,
     );

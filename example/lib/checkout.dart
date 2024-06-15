@@ -1,8 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+// Import for iOS features.
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 // ignore: public_member_api_docs
 class CheckoutPage extends StatefulWidget {
@@ -22,33 +23,27 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> with UrlIFrameParser {
-  final Completer<WebViewController> _controller = Completer();
+  late final WebViewController _webViewController;
+
   @override
   void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        Navigator.pop(context, false);
-        return false;
-      },
-      child: Scaffold(
-          body: SafeArea(
-        child: WebView(
-          onWebViewCreated: _controller.complete,
-          initialUrl:
-              widget.iFrameMode ? toCheckoutURL(widget.url) : widget.url,
-          javascriptMode: JavascriptMode.unrestricted,
-          debuggingEnabled: kDebugMode,
-          navigationDelegate: (request) {
+    late final PlatformWebViewControllerCreationParams params;
+    if (WebViewPlatform.instance is WebKitWebViewPlatform) {
+      params = WebKitWebViewControllerCreationParams(
+        allowsInlineMediaPlayback: true,
+        mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
+      );
+    } else {
+      params = const PlatformWebViewControllerCreationParams();
+    }
+    final WebViewController controller =
+        WebViewController.fromPlatformCreationParams(params);
+    if (kIsWeb == false) {
+      controller
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setBackgroundColor(const Color(0x00000000))
+        ..setNavigationDelegate(
+          NavigationDelegate(onNavigationRequest: (request) {
             if (request.url.contains('success')) {
               Navigator.pop(context, true);
               return NavigationDecision.prevent;
@@ -58,25 +53,7 @@ class _CheckoutPageState extends State<CheckoutPage> with UrlIFrameParser {
               return NavigationDecision.prevent;
             }
             return NavigationDecision.navigate;
-          },
-          javascriptChannels: {
-            JavascriptChannel(
-                name: 'Paymongo',
-                onMessageReceived: (JavascriptMessage message) {
-                  if (message.message == '3DS-authentication-complete') {
-                    Navigator.pop(context, true);
-                    return;
-                  }
-                  if (message.message.contains('success')) {
-                    Navigator.pop(context, true);
-                    return;
-                  }
-                  if (message.message.contains('failed')) {
-                    Navigator.pop(context, false);
-                  }
-                }),
-          },
-          onWebResourceError: (error) async {
+          }, onWebResourceError: (error) async {
             final dialog = await showDialog(
               context: context,
               builder: (context) {
@@ -97,7 +74,45 @@ class _CheckoutPageState extends State<CheckoutPage> with UrlIFrameParser {
             if (dialog) {
               Navigator.pop(context, false);
             }
-          },
+          }),
+        )
+        ..addJavaScriptChannel('Paymongo', onMessageReceived: (message) {
+          if (message.message == '3DS-authentication-complete') {
+            Navigator.pop(context, true);
+            return;
+          }
+          if (message.message.contains('success')) {
+            Navigator.pop(context, true);
+            return;
+          }
+          if (message.message.contains('failed')) {
+            Navigator.pop(context, false);
+          }
+        });
+    }
+    controller.loadRequest(
+        Uri.parse(widget.iFrameMode ? toCheckoutURL(widget.url) : widget.url));
+
+    _webViewController = controller;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context, false);
+        return false;
+      },
+      child: Scaffold(
+          body: SafeArea(
+        child: WebViewWidget(
+          controller: _webViewController,
         ),
       )),
     );

@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'event_handler.dart';
 import 'payments/scaffold.dart';
 import 'shoes.dart';
-import 'utils/utils.dart';
 
 void main() {
-  registerWebViewWebImplementation();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(home: MyApp()));
 }
