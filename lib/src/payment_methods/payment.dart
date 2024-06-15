@@ -86,7 +86,7 @@ extension PayMongoPaymentMethod on PayMongoSDK {
       path: '/payment_methods/$id',
     );
 
-    final response = await get(options);
+    final response = await get<String>(options);
     return response;
   }
 }

@@ -52,14 +52,17 @@ class ListAllRefundResponse extends Equatable {
 
   factory ListAllRefundResponse.fromMap(Map<String, dynamic> map) {
     return ListAllRefundResponse(
-      hasMore: map['hasMore'] ?? false,
+      hasMore: map['hasMore'] as bool? ?? false,
       data: List<RefundResponseAttributes>.from(
-        map['data']?.map(RefundResponseAttributes.fromMap) ?? const [],
+        (map['data'] as List<Map<String, dynamic>>?)
+                ?.map(RefundResponseAttributes.fromMap) ??
+            const [],
       ),
     );
   }
   factory ListAllRefundResponse.fromJson(String source) =>
-      ListAllRefundResponse.fromMap(json.decode(source));
+      ListAllRefundResponse.fromMap(
+          json.decode(source) as Map<String, dynamic>);
 
   final bool hasMore;
   final List<RefundResponseAttributes> data;

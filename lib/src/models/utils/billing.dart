@@ -18,16 +18,16 @@ class PayMongoBilling extends Equatable {
   ///{@macro billing}
   factory PayMongoBilling.fromMap(Map<String, dynamic> map) {
     return PayMongoBilling(
-      name: map['name'] ?? '',
-      phone: map['phone'] ?? '',
-      email: map['email'] ?? '',
-      address: PayMongoAddress.fromMap(map['address']),
+      name: map['name']?.toString() ?? '',
+      phone: map['phone']?.toString() ?? '',
+      email: map['email']?.toString() ?? '',
+      address: PayMongoAddress.fromMap(map['address'] as Map<String, dynamic>),
     );
   }
 
   ///{@macro billing}
   factory PayMongoBilling.fromJson(String source) =>
-      PayMongoBilling.fromMap(json.decode(source));
+      PayMongoBilling.fromMap(json.decode(source) as Map<String, dynamic>);
 
   ///
   final String name;

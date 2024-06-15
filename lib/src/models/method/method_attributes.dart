@@ -30,24 +30,28 @@ PaymentType _toPaymentEnum(String type) {
 class PaymentMethodAttributes extends Equatable {
   /// {@macro payment_method}
   const PaymentMethodAttributes({
-    this.type = PaymentType.card,
     required this.details,
     required this.billing,
+    this.type = PaymentType.card,
   });
 
   /// {@macro payment_method}
   factory PaymentMethodAttributes.fromMap(Map<String, dynamic> map) {
     return PaymentMethodAttributes(
-      type:
-          map['type'] != null ? _toPaymentEnum(map['type']!) : PaymentType.card,
-      details: PaymentMethodDetails.fromMap(map['details']),
-      billing: PayMongoBilling.fromMap(map['billing']),
+      type: map['type'] != null
+          ? _toPaymentEnum(map['type']!.toString())
+          : PaymentType.card,
+      details:
+          PaymentMethodDetails.fromMap(map['details'] as Map<String, dynamic>),
+      billing: PayMongoBilling.fromMap(map['billing'] as Map<String, dynamic>),
     );
   }
 
   /// {@macro payment_method}
   factory PaymentMethodAttributes.fromJson(String source) =>
-      PaymentMethodAttributes.fromMap(json.decode(source));
+      PaymentMethodAttributes.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   ///
   final PaymentType type;
@@ -103,16 +107,16 @@ class PaymentMethodDetails extends Equatable {
   /// {@macro payment_method_details}
   factory PaymentMethodDetails.fromMap(Map<String, dynamic> map) {
     return PaymentMethodDetails(
-      cardNumber: map['card_number'] ?? '',
-      expMonth: map['exp_month'] ?? 0,
-      expYear: map['exp_ear'] ?? 0,
-      cvc: map['cvc'] ?? '',
+      cardNumber: map['card_number']?.toString() ?? '',
+      expMonth: map['exp_month'] as int? ?? 0,
+      expYear: map['exp_ear'] as int? ?? 0,
+      cvc: map['cvc']?.toString() ?? '',
     );
   }
 
   /// {@macro payment_method_details}
   factory PaymentMethodDetails.fromJson(String source) =>
-      PaymentMethodDetails.fromMap(json.decode(source));
+      PaymentMethodDetails.fromMap(json.decode(source) as Map<String, dynamic>);
 
   ///
   final String cardNumber;

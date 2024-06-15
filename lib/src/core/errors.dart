@@ -40,15 +40,15 @@ class PaymongoErrorCodes extends Equatable {
 
   /// {@macro paymongo_error_codes}
   factory PaymongoErrorCodes.fromJson(String source) =>
-      PaymongoErrorCodes.fromMap(json.decode(source));
+      PaymongoErrorCodes.fromMap(json.decode(source) as Map<String, dynamic>);
 
   /// {@macro paymongo_error_codes}
   factory PaymongoErrorCodes.fromMap(Map<String, dynamic> map) {
     return PaymongoErrorCodes(
-      code: map['code'],
-      details: map['details'],
+      code: map['code']?.toString(),
+      details: map['details']?.toString(),
       source: map['source'] != null
-          ? PaymongoErrorSource.fromMap(map['source'])
+          ? PaymongoErrorSource.fromMap(map['source'] as Map<String, dynamic>)
           : null,
     );
   }
@@ -113,14 +113,14 @@ class PaymongoErrorSource extends Equatable {
   ///{@macro error_source}
   factory PaymongoErrorSource.fromMap(Map<String, dynamic> map) {
     return PaymongoErrorSource(
-      pointer: map['pointer'] ?? '',
-      attribute: map['attribute'] ?? '',
+      pointer: map['pointer']?.toString() ?? '',
+      attribute: map['attribute']?.toString() ?? '',
     );
   }
 
   ///{@macro error_source}
   factory PaymongoErrorSource.fromJson(String source) =>
-      PaymongoErrorSource.fromMap(json.decode(source));
+      PaymongoErrorSource.fromMap(json.decode(source) as Map<String, dynamic>);
 
   /// If the payload attribute is nested, it is represented with a dot
   /// `details.card_number`  is based on this payload:

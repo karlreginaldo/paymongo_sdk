@@ -16,17 +16,17 @@ class SourceResult extends Equatable {
 
   factory SourceResult.fromMap(Map<String, dynamic> map) {
     return SourceResult(
-      id: map['id'] ?? '',
-      type: map['type'] ?? '',
+      id: map['id']?.toString() ?? '',
+      type: map['type']?.toString() ?? '',
       attributes: map['attributes'] != null
-          ? SourceAttributes.fromMap(map['attributes'])
+          ? SourceAttributes.fromMap(map['attributes'] as Map<String, dynamic>)
           : null,
     );
   }
 
   ///
   factory SourceResult.fromJson(String source) =>
-      SourceResult.fromMap(json.decode(source));
+      SourceResult.fromMap(json.decode(source) as Map<String, dynamic>);
 
   ///
   final String id;

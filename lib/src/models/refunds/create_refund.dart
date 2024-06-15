@@ -5,23 +5,27 @@ import 'package:equatable/equatable.dart';
 class CreateRefundAttributes extends Equatable {
   const CreateRefundAttributes({
     required this.amount,
-    this.notes,
     required this.paymentId,
     required this.reason,
     required this.metadata,
+    this.notes,
   });
   factory CreateRefundAttributes.fromMap(Map<String, dynamic> map) {
     return CreateRefundAttributes(
-      amount: map['amount']?.toInt() ?? 0,
-      notes: map['notes'],
-      paymentId: map['payment_id'] ?? '',
-      reason: map['reason'] ?? '',
-      metadata: Map<String, dynamic>.from(map['metadata'] ?? const {}),
+      amount: (map['amount'] as int?) ?? 0,
+      notes: map['notes']?.toString(),
+      paymentId: map['payment_id']?.toString() ?? '',
+      reason: map['reason']?.toString() ?? '',
+      metadata: Map<String, dynamic>.from(
+        map['metadata'] as Map<String, dynamic>? ?? const {},
+      ),
     );
   }
 
   factory CreateRefundAttributes.fromJson(String source) =>
-      CreateRefundAttributes.fromMap(json.decode(source));
+      CreateRefundAttributes.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   final int amount;
   final String? notes;

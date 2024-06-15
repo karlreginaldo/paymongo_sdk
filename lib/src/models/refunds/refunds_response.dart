@@ -12,14 +12,16 @@ class RefundResponse extends Equatable {
 
   factory RefundResponse.fromMap(Map<String, dynamic> map) {
     return RefundResponse(
-      id: map['id'] ?? '',
-      type: map['type'] ?? '',
-      attributes: RefundResponseAttributes.fromMap(map['attributes']),
+      id: map['id']?.toString() ?? '',
+      type: map['type']?.toString() ?? '',
+      attributes: RefundResponseAttributes.fromMap(
+        map['attributes'] as Map<String, dynamic>,
+      ),
     );
   }
 
   factory RefundResponse.fromJson(String source) =>
-      RefundResponse.fromMap(json.decode(source));
+      RefundResponse.fromMap(json.decode(source) as Map<String, dynamic>);
 
   final String id;
   final String type;
@@ -60,34 +62,36 @@ class RefundResponseAttributes extends Equatable {
     required this.amount,
     required this.currency,
     required this.livemode,
-    this.notes,
     required this.paymentId,
-    this.payoutId,
     required this.reason,
     required this.status,
     required this.createdAt,
     required this.updatedAt,
+    this.notes,
+    this.payoutId,
     this.balanceTransactionId,
   });
 
   factory RefundResponseAttributes.fromMap(Map<String, dynamic> map) {
     return RefundResponseAttributes(
-      amount: map['amount']?.toInt() ?? 0,
-      currency: map['currency'] ?? '',
-      livemode: map['livemode'] ?? false,
-      notes: map['notes'],
-      paymentId: map['payment_id'] ?? '',
-      payoutId: map['payout_id'],
-      reason: map['reason'] ?? '',
-      status: map['status'] ?? '',
-      createdAt: fromTimeStamp(map['created_at']),
-      updatedAt: fromTimeStamp(map['updated_at']),
-      balanceTransactionId: map['balance_transaction_id'],
+      amount: map['amount'] as int? ?? 0,
+      currency: map['currency']?.toString() ?? '',
+      livemode: map['livemode'] as bool? ?? false,
+      notes: map['notes']?.toString(),
+      paymentId: map['payment_id']?.toString() ?? '',
+      payoutId: map['payout_id']?.toString(),
+      reason: map['reason']?.toString() ?? '',
+      status: map['status']?.toString() ?? '',
+      createdAt: fromTimeStamp(map['created_at'] as int),
+      updatedAt: fromTimeStamp(map['updated_at'] as int),
+      balanceTransactionId: map['balance_transaction_id']?.toString(),
     );
   }
 
   factory RefundResponseAttributes.fromJson(String source) =>
-      RefundResponseAttributes.fromMap(json.decode(source));
+      RefundResponseAttributes.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   final int amount;
   final String currency;

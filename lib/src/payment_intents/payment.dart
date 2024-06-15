@@ -31,7 +31,7 @@ extension PayMongoPaymentIntent on PayMongoSDK {
       path: '/payment_intents/$id',
     );
 
-    final response = await get(options);
+    final response = await get<String>(options);
 
     return response;
   }
@@ -269,7 +269,7 @@ class PaymentIntent<T extends PaymentGateway>
     String paymentIntentId,
     String clientKey,
   ) async {
-    final _http = PayMongoHttp(_apiKey);
+    final http = PayMongoHttp(_apiKey);
     final options = PayMongoOptions(
       path: '/payment_intents/$paymentIntentId',
       params: {
@@ -278,8 +278,8 @@ class PaymentIntent<T extends PaymentGateway>
     );
 
     final response =
-        await _http.get(Uri.https(_url, "v1${options.path}", options.params));
-    _http.close();
+        await http.get(Uri.https(_url, "v1${options.path}", options.params));
+    http.close();
     final json = serialize<Map<String, dynamic>>(response, options.path);
 
     return PaymentIntentResponse.fromMap(json);

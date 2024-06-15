@@ -16,17 +16,17 @@ class Redirect extends Equatable {
   ///
   factory Redirect.fromMap(Map<String, dynamic> map) {
     return Redirect(
-      success: map['success'] ?? '',
-      failed: map['failed'] ?? '',
-      checkoutUrl: map['checkout_url'],
-      url: map['url'],
-      returnUrl: map['return_url'],
+      success: map['success']?.toString() ?? '',
+      failed: map['failed']?.toString() ?? '',
+      checkoutUrl: map['checkout_url']?.toString(),
+      url: map['url']?.toString(),
+      returnUrl: map['return_url']?.toString(),
     );
   }
 
   ///
   factory Redirect.fromJson(String source) =>
-      Redirect.fromMap(json.decode(source));
+      Redirect.fromMap(json.decode(source) as Map<String, dynamic>);
 
   ///
   final String success;

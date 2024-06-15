@@ -18,7 +18,7 @@ import 'package:equatable/equatable.dart';
 /// For example, if you make a list request and receive 10 resources,
 /// ending with some_resource_id, your subsequent call can include
 /// after=some_resource_id in order to fetch the next page of the list.
-/// {@endtemplate query_payments}
+/// {@endtemplate}
 class PaymentListQueryParams extends Equatable {
   /// {@macro query_payments}
   const PaymentListQueryParams({
@@ -30,15 +30,17 @@ class PaymentListQueryParams extends Equatable {
   /// {@macro query_payments}
   factory PaymentListQueryParams.fromMap(Map<String, dynamic> map) {
     return PaymentListQueryParams(
-      before: map['before'] ?? '',
-      after: map['after'] ?? '',
-      limit: map['limit'] ?? '',
+      before: map['before']?.toString() ?? '',
+      after: map['after']?.toString() ?? '',
+      limit: map['limit'] as int? ?? 10,
     );
   }
 
   /// {@macro query_payments}
   factory PaymentListQueryParams.fromJson(String source) =>
-      PaymentListQueryParams.fromMap(json.decode(source));
+      PaymentListQueryParams.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   ///A cursor for use in pagination. [before] is a resource ID that defines your
   /// place in the list.

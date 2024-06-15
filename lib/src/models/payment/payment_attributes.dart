@@ -10,26 +10,28 @@ class CreatePaymentAttributes extends Equatable {
   ///{@macro create_payment_attr}
   const CreatePaymentAttributes({
     required this.amount,
-    this.description,
     required this.currency,
-    this.statementDescriptor,
     required this.source,
+    this.description,
+    this.statementDescriptor,
   });
 
   ///{@macro create_payment_attr}
   factory CreatePaymentAttributes.fromMap(Map<String, dynamic> map) {
     return CreatePaymentAttributes(
-      amount: map['amount'] ?? 0.0,
-      description: map['description'] ?? '',
-      currency: map['currency'] ?? '',
-      statementDescriptor: map['statementDescriptor'] ?? '',
-      source: PaymentSource.fromMap(map['source']),
+      amount: (map['amount'] as double?) ?? 0.0,
+      description: map['description']?.toString() ?? '',
+      currency: map['currency']?.toString() ?? '',
+      statementDescriptor: map['statementDescriptor']?.toString() ?? '',
+      source: PaymentSource.fromMap(map['source'] as Map<String, dynamic>),
     );
   }
 
   ///{@macro create_payment_attr}
   factory CreatePaymentAttributes.fromJson(String source) =>
-      CreatePaymentAttributes.fromMap(json.decode(source));
+      CreatePaymentAttributes.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   /// the package handles converting the amount * 100
   final double amount;
@@ -101,14 +103,14 @@ class PaymentSource extends Equatable {
   ///{@macro payment_source}
   factory PaymentSource.fromMap(Map<String, dynamic> map) {
     return PaymentSource(
-      id: map['id'] ?? '',
-      type: map['type'] ?? '',
+      id: map['id']?.toString() ?? '',
+      type: map['type']?.toString() ?? '',
     );
   }
 
   ///{@macro payment_source}
   factory PaymentSource.fromJson(String source) =>
-      PaymentSource.fromMap(json.decode(source));
+      PaymentSource.fromMap(json.decode(source) as Map<String, dynamic>);
 
   ///
   final String id;

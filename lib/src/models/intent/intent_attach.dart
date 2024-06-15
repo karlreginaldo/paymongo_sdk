@@ -21,16 +21,16 @@ class PaymentIntentAttach extends Equatable {
   /// {@macro payment_intent_attach}
   factory PaymentIntentAttach.fromMap(Map<String, dynamic> map) {
     return PaymentIntentAttach(
-      paymentMethod: map['payment_method'] ?? '',
-      clientKey: map['client_key'] ?? '',
-      returnUrl: map['return_url'] ?? '',
+      paymentMethod: map['payment_method']?.toString() ?? '',
+      clientKey: map['client_key']?.toString() ?? '',
+      returnUrl: map['return_url']?.toString() ?? '',
     );
   }
 
   /// Converts [String] of json to [PaymentIntentAttach] class
   /// {@macro payment_intent_attach}
   factory PaymentIntentAttach.fromJson(String source) =>
-      PaymentIntentAttach.fromMap(json.decode(source));
+      PaymentIntentAttach.fromMap(json.decode(source) as Map<String, dynamic>);
 
   /// id of PaymentMethod to attach to the PaymentIntent
   final String paymentMethod;
@@ -112,16 +112,19 @@ class PaymentIntentAttachResponse extends Equatable {
   /// {@macro payment_intent_attach_response}
   factory PaymentIntentAttachResponse.fromMap(Map<String, dynamic> map) {
     return PaymentIntentAttachResponse(
-      id: map['id'] ?? '',
-      type: map['type'] ?? '',
-      attributes:
-          PaymentIntentAttachResponseAttributes.fromMap(map['attributes']),
+      id: map['id']?.toString() ?? '',
+      type: map['type']?.toString() ?? '',
+      attributes: PaymentIntentAttachResponseAttributes.fromMap(
+        map['attributes'] as Map<String, dynamic>,
+      ),
     );
   }
 
   /// {@macro payment_intent_attach_response}
   factory PaymentIntentAttachResponse.fromJson(String source) =>
-      PaymentIntentAttachResponse.fromMap(json.decode(source));
+      PaymentIntentAttachResponse.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   /// payment intent id
   final String id;
@@ -177,14 +180,16 @@ class PaymentIntentNextAction extends Equatable {
   /// {@macro payment_intent_next_action}
   factory PaymentIntentNextAction.fromMap(Map<String, dynamic> map) {
     return PaymentIntentNextAction(
-      type: map['type'] ?? '',
-      redirect: Redirect.fromMap(map['redirect']),
+      type: map['type']?.toString() ?? '',
+      redirect: Redirect.fromMap(map['redirect'] as Map<String, dynamic>),
     );
   }
 
   /// {@macro payment_intent_next_action}
   factory PaymentIntentNextAction.fromJson(String source) =>
-      PaymentIntentNextAction.fromMap(json.decode(source));
+      PaymentIntentNextAction.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   /// next action type
   final String type;
@@ -246,35 +251,43 @@ class PaymentIntentAttachResponseAttributes extends Equatable {
 
   /// {@macro payment_intent_attach_response_attributes}
   factory PaymentIntentAttachResponseAttributes.fromJson(String source) =>
-      PaymentIntentAttachResponseAttributes.fromMap(json.decode(source));
+      PaymentIntentAttachResponseAttributes.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   /// {@macro payment_intent_attach_response_attributes}
   factory PaymentIntentAttachResponseAttributes.fromMap(
     Map<String, dynamic> map,
   ) {
     return PaymentIntentAttachResponseAttributes(
-      amount: map['amount'],
-      currency: map['currency'] ?? '',
-      description: map['description'] ?? '',
-      statementDescriptor: map['statement_descriptor'] ?? '',
-      status: map['status'] ?? '',
-      livemode: map['livemode'] ?? false,
-      clientKey: map['client_key'] ?? '',
-      createdAt: fromTimeStamp(map['created_at']) ?? DateTime.now(),
-      updatedAt: fromTimeStamp(map['updated_at']) ?? DateTime.now(),
-      lastPaymentError: map['last_payment_error'] ?? '',
+      amount: (map['amount'] as num).toInt(),
+      currency: map['currency']?.toString() ?? '',
+      description: map['description']?.toString() ?? '',
+      statementDescriptor: map['statement_descriptor']?.toString() ?? '',
+      status: map['status']?.toString() ?? '',
+      livemode: map['livemode'] as bool? ?? false,
+      clientKey: map['client_key']?.toString() ?? '',
+      createdAt: fromTimeStamp(map['created_at'] as int?) ?? DateTime.now(),
+      updatedAt: fromTimeStamp(map['updated_at'] as int?) ?? DateTime.now(),
+      lastPaymentError: map['last_payment_error']?.toString() ?? '',
       paymentMethodAllowed:
-          List<String>.from(map['payment_method_allowed'] ?? const []),
+          List<String>.from(map['payment_method_allowed'] as List? ?? const []),
       payments: List<Map<String, dynamic>>.from(
-        map['payments'] ?? [],
+        map['payments'] as List? ?? [],
       ).map(CreatePaymentResponse.fromMap).toList(),
       nextAction: map['next_action'] != null
-          ? PaymentIntentNextAction.fromMap(map['next_action'])
+          ? PaymentIntentNextAction.fromMap(
+              map['next_action'] as Map<String, dynamic>,
+            )
           : null,
       paymentMethodOptions: map['payment_method_options'] != null
-          ? PaymentMethodOptions.fromMap(map['payment_method_options'])
+          ? PaymentMethodOptions.fromMap(
+              map['payment_method_options'] as Map<String, dynamic>,
+            )
           : const PaymentMethodOptions(),
-      metadata: Map<String, dynamic>.from(map['metadata'] ?? const {}),
+      metadata: Map<String, dynamic>.from(
+        map['metadata'] as Map<String, dynamic>? ?? const {},
+      ),
     );
   }
 

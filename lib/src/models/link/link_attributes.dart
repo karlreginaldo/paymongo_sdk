@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
 
 class CreateLinkAttributes extends Equatable {
-  final int amount;
-  final String description;
-  final String? remarks;
   const CreateLinkAttributes({
     required this.amount,
     required this.description,
     this.remarks,
   });
+  final int amount;
+  final String description;
+  final String? remarks;
 
   CreateLinkAttributes copyWith({
     int? amount,

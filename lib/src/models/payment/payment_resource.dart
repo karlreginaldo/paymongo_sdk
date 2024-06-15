@@ -16,16 +16,19 @@ class CreatePaymentResponse extends Equatable {
   /// {@macro create_payment_response}
   factory CreatePaymentResponse.fromMap(Map<String, dynamic> map) {
     return CreatePaymentResponse(
-      id: map['id'],
-      source:
-          map['source'] != null ? SourceResult.fromMap(map['source']) : null,
-      type: map['type'],
+      id: map['id']?.toString(),
+      source: map['source'] != null
+          ? SourceResult.fromMap(map['source'] as Map<String, dynamic>)
+          : null,
+      type: map['type']?.toString(),
     );
   }
 
   /// {@macro create_payment_response}
   factory CreatePaymentResponse.fromJson(String source) =>
-      CreatePaymentResponse.fromMap(json.decode(source));
+      CreatePaymentResponse.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   ///
   final String? id;

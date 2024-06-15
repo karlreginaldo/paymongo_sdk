@@ -17,15 +17,18 @@ class WebhookResponse extends Equatable {
   /// {@macro webhook_response}
   factory WebhookResponse.fromMap(Map<String, dynamic> map) {
     return WebhookResponse(
-      id: map['id'] ?? '',
-      type: map['type'] ?? '',
-      attributes: WebhookResponseAttribute.fromMap(map['attributes']),
+      id: map['id']?.toString() ?? '',
+      type: map['type']?.toString() ?? '',
+      attributes: WebhookResponseAttribute.fromMap(
+        map['attributes'] as Map<String, dynamic>,
+      ),
     );
   }
 
   /// {@macro webhook_response}
-  factory WebhookResponse.fromJson(String source) =>
-      WebhookResponse.fromMap(json.decode(source));
+  factory WebhookResponse.fromJson(String source) => WebhookResponse.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   ///
   final String id;

@@ -58,23 +58,23 @@ class PaymentGateway extends Equatable {
 
   /// GET request
   Future<Response> fetch(PayMongoOptions options) async {
-    final _http = PayMongoHttp(apiKey);
+    final http = PayMongoHttp(apiKey);
 
     final response =
-        await _http.get(Uri.https(url, "v1${options.path}", options.params));
-    _http.close();
+        await http.get(Uri.https(url, "v1${options.path}", options.params));
+    http.close();
     return response;
   }
 
   /// POST request
   Future<Response> post(PayMongoOptions options) async {
-    final _http = PayMongoHttp(apiKey);
+    final http = PayMongoHttp(apiKey);
 
-    final response = await _http.post(
+    final response = await http.post(
       Uri.https(url, "v1${options.path}", options.params),
       body: jsonEncode({"data": options.data}),
     );
-    _http.close();
+    http.close();
     return response;
   }
 

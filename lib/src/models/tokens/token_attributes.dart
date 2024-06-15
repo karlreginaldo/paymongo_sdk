@@ -20,20 +20,22 @@ class PayMongoTokenAttributes extends Equatable {
   ///
   factory PayMongoTokenAttributes.fromMap(Map<String, dynamic> map) {
     return PayMongoTokenAttributes(
-      number: map['number'] ?? '',
-      expireMonth: map['expireMonth'] ?? 0,
-      expireYear: map['expireYear'] ?? 0,
-      cvc: map['cvc'] ?? '',
-      billing: PayMongoBilling.fromMap(map['billing']),
-      name: map['name'] ?? '',
-      email: map['email'] ?? '',
-      phone: map['phone'] ?? '',
+      number: map['number']?.toString() ?? '',
+      expireMonth: map['expireMonth'] as int? ?? 0,
+      expireYear: map['expireYear'] as int? ?? 0,
+      cvc: map['cvc']?.toString() ?? '',
+      billing: PayMongoBilling.fromMap(map['billing'] as Map<String, dynamic>),
+      name: map['name']?.toString() ?? '',
+      email: map['email']?.toString() ?? '',
+      phone: map['phone']?.toString() ?? '',
     );
   }
 
   ///
   factory PayMongoTokenAttributes.fromJson(String source) =>
-      PayMongoTokenAttributes.fromMap(json.decode(source));
+      PayMongoTokenAttributes.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   ///
   final String number;

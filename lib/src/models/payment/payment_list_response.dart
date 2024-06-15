@@ -15,16 +15,18 @@ class PaymentListResponse {
   /// {@macro payment_list_response}
   factory PaymentListResponse.fromMap(Map<String, dynamic> map) {
     return PaymentListResponse(
-      hasMore: map['has_more'] ?? false,
+      hasMore: map['has_more'] as bool? ?? false,
       data: List<PaymentListAllResponse>.from(
-        map['data']?.map(PaymentListAllResponse.fromMap) ?? const [],
+        (map['data'] as List<Map<String, dynamic>>?)
+                ?.map(PaymentListAllResponse.fromMap) ??
+            const [],
       ),
     );
   }
 
   /// {@macro payment_list_response}
   factory PaymentListResponse.fromJson(String source) =>
-      PaymentListResponse.fromMap(json.decode(source));
+      PaymentListResponse.fromMap(json.decode(source) as Map<String, dynamic>);
 
   /// if has more data
   final bool hasMore;
@@ -67,16 +69,18 @@ class PaymentListAllResponse extends Equatable {
   /// {@macro payment_list_all_response}
   factory PaymentListAllResponse.fromMap(Map<String, dynamic> map) {
     return PaymentListAllResponse(
-      hasMore: map['hasMore'] ?? false,
+      hasMore: map['hasMore'] as bool? ?? false,
       data: List<Map<String, dynamic>>.from(
-        map['data'] ?? [],
+        map['data'] as List? ?? [],
       ).map(PaymentDataResponse.fromMap).toList(),
     );
   }
 
   /// {@macro payment_list_all_response}
   factory PaymentListAllResponse.fromJson(String source) =>
-      PaymentListAllResponse.fromMap(json.decode(source));
+      PaymentListAllResponse.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   ///
   final bool hasMore;
@@ -127,17 +131,19 @@ class PaymentDataResponse extends Equatable {
   /// {@macro payment_list_response}
   factory PaymentDataResponse.fromMap(Map<String, dynamic> map) {
     return PaymentDataResponse(
-      id: map['id'] ?? '',
-      type: map['type'] ?? '',
+      id: map['id']?.toString() ?? '',
+      type: map['type']?.toString() ?? '',
       attributes: map['attributes'] != null
-          ? PaymentAttributesResponse.fromMap(map['attributes'])
+          ? PaymentAttributesResponse.fromMap(
+              map['attributes'] as Map<String, dynamic>,
+            )
           : null,
     );
   }
 
   /// {@macro payment_list_response}
   factory PaymentDataResponse.fromJson(String source) =>
-      PaymentDataResponse.fromMap(json.decode(source));
+      PaymentDataResponse.fromMap(json.decode(source) as Map<String, dynamic>);
 
   /// payment id.
   final String id;

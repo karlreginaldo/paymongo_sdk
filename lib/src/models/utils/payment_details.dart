@@ -15,16 +15,18 @@ class PayMongoPaymentDetails extends Equatable {
   ///
   factory PayMongoPaymentDetails.fromMap(Map<String, dynamic> map) {
     return PayMongoPaymentDetails(
-      cardNumber: map['card_number'] ?? 0,
-      expMonth: map['exp_month'] ?? 0,
-      expYear: map['exp_year'] ?? 0,
-      cvc: map['cvc'] ?? '',
+      cardNumber: map['card_number'] as int? ?? 0,
+      expMonth: map['exp_month'] as int? ?? 0,
+      expYear: map['exp_year'] as int? ?? 0,
+      cvc: map['cvc']?.toString() ?? '',
     );
   }
 
   ///
   factory PayMongoPaymentDetails.fromJson(String source) =>
-      PayMongoPaymentDetails.fromMap(json.decode(source));
+      PayMongoPaymentDetails.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   ///
   final int? cardNumber;

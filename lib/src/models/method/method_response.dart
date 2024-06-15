@@ -16,15 +16,19 @@ class PaymentMethodResponse extends Equatable {
   /// {@macro payment_method_response}
   factory PaymentMethodResponse.fromMap(Map<String, dynamic> map) {
     return PaymentMethodResponse(
-      id: map['id'] ?? '',
-      type: map['type'] ?? '',
-      attributes: PaymentMethodAttributesResponse.fromMap(map['attributes']),
+      id: map['id']?.toString() ?? '',
+      type: map['type']?.toString() ?? '',
+      attributes: PaymentMethodAttributesResponse.fromMap(
+        map['attributes'] as Map<String, dynamic>,
+      ),
     );
   }
 
   /// {@macro payment_method_response}
   factory PaymentMethodResponse.fromJson(String source) =>
-      PaymentMethodResponse.fromMap(json.decode(source));
+      PaymentMethodResponse.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   ///
   final String id;
@@ -73,33 +77,37 @@ class PaymentMethodResponse extends Equatable {
 class PaymentMethodAttributesResponse extends Equatable {
   ///{@macro payment_response_attributes}
   const PaymentMethodAttributesResponse({
+    required this.billing,
+    required this.createdAt, // ignore: always_put_required_named_parameters_first
+    required this.updatedAt, // ignore: always_put_required_named_parameters_first
+    required this.details, // ignore: always_put_required_named_parameters_first
+    required this.metadata,
     this.livemode = false,
     this.type = 'card',
-    required this.billing,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.details,
-    required this.metadata,
   });
 
   ///{@macro payment_response_attributes}
   factory PaymentMethodAttributesResponse.fromMap(Map<String, dynamic> map) {
     return PaymentMethodAttributesResponse(
-      livemode: map['livemode'] ?? false,
-      type: map['type'] ?? '',
-      billing: PayMongoBilling.fromMap(map['billing']),
-      createdAt: fromTimeStamp(map['created_at']) ?? DateTime.now(),
-      updatedAt: fromTimeStamp(map['updated_at']) ?? DateTime.now(),
+      livemode: map['livemode'] as bool? ?? false,
+      type: map['type']?.toString() ?? '',
+      billing: PayMongoBilling.fromMap(map['billing'] as Map<String, dynamic>),
+      createdAt: fromTimeStamp(map['created_at'] as int) ?? DateTime.now(),
+      updatedAt: fromTimeStamp(map['updated_at'] as int) ?? DateTime.now(),
       details: map['details'] != null
-          ? PaymentMethodDetails.fromMap(map['details'])
+          ? PaymentMethodDetails.fromMap(map['details'] as Map<String, dynamic>)
           : null,
-      metadata: Map<String, dynamic>.from(map['metadata'] ?? const {}),
+      metadata: Map<String, dynamic>.from(
+        map['metadata'] as Map<String, dynamic>? ?? const {},
+      ),
     );
   }
 
   ///{@macro payment_response_attributes}
   factory PaymentMethodAttributesResponse.fromJson(String source) =>
-      PaymentMethodAttributesResponse.fromMap(json.decode(source));
+      PaymentMethodAttributesResponse.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   ///{@macro payment_response_attributes}
   String toJson() => json.encode(toMap());

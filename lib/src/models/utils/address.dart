@@ -18,18 +18,18 @@ class PayMongoAddress {
   /// {@macro customer_address}
   factory PayMongoAddress.fromMap(Map<String, dynamic> map) {
     return PayMongoAddress(
-      city: map['city'] ?? '',
-      country: map['country'] ?? '',
-      line1: map['line1'] ?? '',
-      line2: map['line2'] ?? '',
-      postalCode: map['postal_code'] ?? '',
-      state: map['state'] ?? '',
+      city: map['city']?.toString() ?? '',
+      country: map['country']?.toString() ?? '',
+      line1: map['line1']?.toString() ?? '',
+      line2: map['line2']?.toString() ?? '',
+      postalCode: map['postal_code']?.toString() ?? '',
+      state: map['state']?.toString() ?? '',
     );
   }
 
   /// {@macro customer_address}
   factory PayMongoAddress.fromJson(String source) =>
-      PayMongoAddress.fromMap(json.decode(source));
+      PayMongoAddress.fromMap(json.decode(source) as Map<String, dynamic>);
 
   ///
   final String? city;

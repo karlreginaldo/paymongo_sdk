@@ -9,23 +9,25 @@ import 'package:meta/meta.dart';
 class PayMongoOptions extends Equatable {
   ///
   const PayMongoOptions({
-    this.data,
     required this.path,
+    this.data,
     this.params,
   });
 
   ///
   factory PayMongoOptions.fromMap(Map<String, dynamic> map) {
     return PayMongoOptions(
-      data: Map<String, dynamic>.from(map['data'] ?? const {}),
-      path: map['path'] ?? '',
-      params: map['params'] ?? '' as Map<String, dynamic>?,
+      data: Map<String, dynamic>.from(
+        map['data'] as Map<String, dynamic>? ?? const {},
+      ),
+      path: map['path']?.toString() ?? '',
+      params: map['params'] as Map<String, dynamic>?,
     );
   }
 
   ///
   factory PayMongoOptions.fromJson(String source) =>
-      PayMongoOptions.fromMap(json.decode(source));
+      PayMongoOptions.fromMap(json.decode(source) as Map<String, dynamic>);
 
   ///
   final Map<String, dynamic>? data;

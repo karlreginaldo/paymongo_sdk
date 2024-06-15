@@ -27,6 +27,6 @@ mixin PaymentResponseSerializer {
         paymongoErrors: errors,
       );
     }
-    return onSerializedCallback?.call(json) ?? json?['data'] as T;
+    return onSerializedCallback?.call(json as Object) ?? json?['data'] as T;
   }
 }

@@ -21,19 +21,21 @@ class WebhookResponseAttribute extends Equatable {
   /// {@macro webhook_response_attribute}
   factory WebhookResponseAttribute.fromMap(Map<String, dynamic> map) {
     return WebhookResponseAttribute(
-      livemode: map['livemode'] ?? false,
-      secretKey: map['secretKey'] ?? '',
-      status: map['status'] ?? '',
-      url: map['url'] ?? '',
-      events: List<String>.from(map['events'] ?? const []),
-      createdAt: fromTimeStamp(map['created_at']),
-      updatedAt: fromTimeStamp(map['updated_at']),
+      livemode: map['livemode'] as bool? ?? false,
+      secretKey: map['secretKey']?.toString() ?? '',
+      status: map['status']?.toString() ?? '',
+      url: map['url']?.toString() ?? '',
+      events: List<String>.from(map['events'] as List? ?? const []),
+      createdAt: fromTimeStamp(map['created_at'] as int?),
+      updatedAt: fromTimeStamp(map['updated_at'] as int?),
     );
   }
 
   /// {@macro webhook_response_attribute}
   factory WebhookResponseAttribute.fromJson(String source) =>
-      WebhookResponseAttribute.fromMap(json.decode(source));
+      WebhookResponseAttribute.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   ///
   final bool livemode;

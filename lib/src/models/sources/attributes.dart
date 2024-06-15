@@ -9,25 +9,25 @@ class SourceAttributes extends Equatable {
   const SourceAttributes({
     required this.type,
     required this.amount,
-    this.currency = 'PHP',
     required this.redirect,
     required this.billing,
+    this.currency = 'PHP',
   });
 
   ///
   factory SourceAttributes.fromMap(Map<String, dynamic> map) {
     return SourceAttributes(
-      type: map['type'] ?? '',
+      type: map['type']?.toString() ?? '',
       amount: (map['amount'] as num).toDouble(),
-      currency: map['currency'] ?? '',
-      redirect: Redirect.fromMap(map['redirect']),
-      billing: PayMongoBilling.fromMap(map['billing']),
+      currency: map['currency']?.toString() ?? '',
+      redirect: Redirect.fromMap(map['redirect'] as Map<String, dynamic>),
+      billing: PayMongoBilling.fromMap(map['billing'] as Map<String, dynamic>),
     );
   }
 
   ///
   factory SourceAttributes.fromJson(String source) =>
-      SourceAttributes.fromMap(json.decode(source));
+      SourceAttributes.fromMap(json.decode(source) as Map<String, dynamic>);
 
   ///
   final String type;

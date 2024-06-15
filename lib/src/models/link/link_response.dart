@@ -4,14 +4,29 @@ import 'package:equatable/equatable.dart';
 import 'package:paymongo_sdk/paymongo_sdk.dart';
 
 class LinkResponse extends Equatable {
-  final String? id;
-  final String? type;
-  final LinkResponseAttributes? attributes;
   const LinkResponse({
     this.id,
     this.type,
     this.attributes,
   });
+
+  factory LinkResponse.fromMap(Map<String, dynamic> map) {
+    return LinkResponse(
+      id: map['id']?.toString(),
+      type: map['type']?.toString(),
+      attributes: map['attributes'] != null
+          ? LinkResponseAttributes.fromMap(
+              map['attributes'] as Map<String, dynamic>,
+            )
+          : null,
+    );
+  }
+
+  factory LinkResponse.fromJson(String source) =>
+      LinkResponse.fromMap(json.decode(source) as Map<String, dynamic>);
+  final String? id;
+  final String? type;
+  final LinkResponseAttributes? attributes;
 
   LinkResponse copyWith({
     String? id,
@@ -33,26 +48,60 @@ class LinkResponse extends Equatable {
     };
   }
 
-  factory LinkResponse.fromMap(Map<String, dynamic> map) {
-    return LinkResponse(
-      id: map['id'],
-      type: map['type'],
-      attributes: map['attributes'] != null
-          ? LinkResponseAttributes.fromMap(map['attributes'])
-          : null,
-    );
-  }
-
   String toJson() => json.encode(toMap());
-
-  factory LinkResponse.fromJson(String source) =>
-      LinkResponse.fromMap(json.decode(source));
 
   @override
   List<Object?> get props => [id, type, attributes];
 }
 
 class LinkResponseAttributes extends Equatable {
+  const LinkResponseAttributes({
+    required this.taxes,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.payments,
+    this.amount,
+    this.archived,
+    this.currency,
+    this.description,
+    this.livemode,
+    this.fee,
+    this.status,
+    this.taxAmount,
+    this.checkoutUrl,
+    this.referenceNumber,
+  });
+  factory LinkResponseAttributes.fromJson(String source) =>
+      LinkResponseAttributes.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
+
+  factory LinkResponseAttributes.fromMap(Map<String, dynamic> map) {
+    return LinkResponseAttributes(
+      amount: (map['amount'] as int?) ?? 0,
+      archived: map['archived'] as bool? ?? false,
+      currency: map['currency']?.toString(),
+      description: map['description']?.toString(),
+      livemode: map['livemode'] as bool? ?? false,
+      fee: map['fee'] as int?,
+      status: map['status']?.toString(),
+      taxAmount: map['taxAmount'] as int,
+      taxes: List<PaymentTaxResponse?>.from(
+        (map['taxes'] as List<Map<String, dynamic>>?)
+                ?.map(PaymentTaxResponse.fromMap) ??
+            const [],
+      ),
+      checkoutUrl: map['checkoutUrl']?.toString(),
+      referenceNumber: map['referenceNumber']?.toString(),
+      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
+      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int),
+      payments: List<PaymentListAllResponse>.from(
+        (map['payments'] as List<Map<String, dynamic>>?)
+                ?.map(PaymentListAllResponse.fromMap) ??
+            const [],
+      ),
+    );
+  }
   final int? amount;
   final bool? archived;
   final String? currency;
@@ -67,22 +116,6 @@ class LinkResponseAttributes extends Equatable {
   final DateTime createdAt;
   final DateTime updatedAt;
   final List<PaymentListAllResponse> payments;
-  const LinkResponseAttributes({
-    this.amount,
-    this.archived,
-    this.currency,
-    this.description,
-    this.livemode,
-    this.fee,
-    this.status,
-    this.taxAmount,
-    required this.taxes,
-    this.checkoutUrl,
-    this.referenceNumber,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.payments,
-  });
 
   LinkResponseAttributes copyWith({
     int? amount,
@@ -137,33 +170,7 @@ class LinkResponseAttributes extends Equatable {
     };
   }
 
-  factory LinkResponseAttributes.fromMap(Map<String, dynamic> map) {
-    return LinkResponseAttributes(
-      amount: map['amount']?.toInt(),
-      archived: map['archived'],
-      currency: map['currency'],
-      description: map['description'],
-      livemode: map['livemode'],
-      fee: map['fee']?.toInt(),
-      status: map['status'],
-      taxAmount: map['taxAmount']?.toInt(),
-      taxes: List<PaymentTaxResponse?>.from(
-        map['taxes']?.map(PaymentTaxResponse.fromMap) ?? const [],
-      ),
-      checkoutUrl: map['checkoutUrl'],
-      referenceNumber: map['referenceNumber'],
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt']),
-      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updatedAt']),
-      payments: List<PaymentListAllResponse>.from(
-        map['payments']?.map(PaymentListAllResponse.fromMap) ?? const [],
-      ),
-    );
-  }
-
   String toJson() => json.encode(toMap());
-
-  factory LinkResponseAttributes.fromJson(String source) =>
-      LinkResponseAttributes.fromMap(json.decode(source));
 
   @override
   List<Object?> get props {

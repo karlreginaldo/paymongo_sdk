@@ -17,7 +17,6 @@ class PaymentAttributesResponse extends Equatable {
     required this.currency,
     required this.description,
     required this.disputed,
-    this.externalReferenceNumber,
     required this.fee,
     required this.foreignFee,
     required this.livemode,
@@ -27,7 +26,6 @@ class PaymentAttributesResponse extends Equatable {
     required this.source,
     required this.statementDescriptor,
     required this.status,
-    this.taxAmount,
     required this.refunds,
     required this.taxes,
     required this.availableAt,
@@ -35,52 +33,58 @@ class PaymentAttributesResponse extends Equatable {
     required this.paidAt,
     required this.updatedAt,
     required this.paymentIntentId,
+    this.externalReferenceNumber,
+    this.taxAmount,
   });
 
   ///
   factory PaymentAttributesResponse.fromJson(String source) =>
-      PaymentAttributesResponse.fromMap(json.decode(source));
+      PaymentAttributesResponse.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   ///
   factory PaymentAttributesResponse.fromMap(Map<String, dynamic> map) {
     return PaymentAttributesResponse(
-      accessUrl: map['access_url'],
-      amount: map['amount'] ?? 0,
-      balanceTransactionId: map['balance_transaction_id'] ?? '',
+      accessUrl: map['access_url']?.toString(),
+      amount: (map['amount'] as num?)?.toInt() ?? 0,
+      balanceTransactionId: map['balance_transaction_id']?.toString() ?? '',
       billing: map['billing'] != null
-          ? PayMongoBilling.fromMap(map['billing'])
+          ? PayMongoBilling.fromMap(map['billing'] as Map<String, dynamic>)
           : null,
-      currency: map['currency'] ?? '',
-      description: map['description'] ?? '',
-      disputed: map['disputed'] ?? false,
-      externalReferenceNumber: map['external_reference_number'],
-      fee: map['fee'] ?? 0,
-      foreignFee: map['foreign_fee'] ?? 0,
-      livemode: map['livemode'] ?? false,
-      netAmount: map['net_amount'] ?? 0,
-      origin: map['origin'] ?? '',
-      paymentIntentId: map['payment_intent_id'] ?? '',
-      payout: map['payout'] ?? '',
+      currency: map['currency']?.toString() ?? '',
+      description: map['description']?.toString() ?? '',
+      disputed: map['disputed'] as bool? ?? false,
+      externalReferenceNumber: map['external_reference_number']?.toString(),
+      fee: map['fee'] as int? ?? 0,
+      foreignFee: map['foreign_fee'] as int? ?? 0,
+      livemode: map['livemode'] as bool? ?? false,
+      netAmount: map['net_amount'] as int? ?? 0,
+      origin: map['origin']?.toString() ?? '',
+      paymentIntentId: map['payment_intent_id']?.toString() ?? '',
+      payout: map['payout']?.toString() ?? '',
       source: map['source'] != null
-          ? PaymentAttributeSourceResponse.fromMap(map['source'])
+          ? PaymentAttributeSourceResponse.fromMap(
+              map['source'] as Map<String, dynamic>,
+            )
           : null,
-      statementDescriptor: map['statement_descriptor'] ?? '',
-      status: map['status'] ?? '',
-      taxAmount: map['tax_amount'],
+      statementDescriptor: map['statement_descriptor']?.toString() ?? '',
+      status: map['status']?.toString() ?? '',
+      taxAmount: map['tax_amount'] as int?,
       availableAt: map['available_at'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['available_at'])
+          ? DateTime.fromMillisecondsSinceEpoch(map['available_at'] as int)
           : null,
-      createdAt: fromTimeStamp(map['created_at']),
-      updatedAt: fromTimeStamp(map['updated_at']),
-      paidAt: fromTimeStamp(map['paid_at']),
+      createdAt: fromTimeStamp(map['created_at'] as int),
+      updatedAt: fromTimeStamp(map['updated_at'] as int),
+      paidAt: fromTimeStamp(map['paid_at'] as int),
       refunds: map['refunds'] != null
           ? List<Map<String, dynamic>>.from(
-              map['refunds'] ?? [],
+              map['refunds'] as List? ?? [],
             ).map(PaymentRefundResponse.fromMap).toList()
           : null,
       taxes: map['taxes'] != null
           ? List<Map<String, dynamic>>.from(
-              map['taxes'],
+              map['taxes'] as List,
             ).map(PaymentTaxResponse.fromMap).toList()
           : null,
     );
@@ -291,29 +295,29 @@ class PaymentAttributesResponse extends Equatable {
 class PaymentTaxResponse extends Equatable {
   ///
   const PaymentTaxResponse({
-    this.currency = 'PHP',
     required this.amount,
     required this.inclusive,
     required this.name,
     required this.type,
     required this.value,
+    this.currency = 'PHP',
   });
 
   ///
   factory PaymentTaxResponse.fromMap(Map<String, dynamic> map) {
     return PaymentTaxResponse(
-      amount: map['amount'] ?? 0.0,
-      currency: map['currency'] ?? '',
-      inclusive: map['inclusive'] ?? false,
-      name: map['name'] ?? '',
-      type: map['type'] ?? '',
-      value: map['value'] ?? '',
+      amount: (map['amount'] as num?)?.toInt() ?? 0.0,
+      currency: map['currency']?.toString() ?? '',
+      inclusive: map['inclusive'] as bool? ?? false,
+      name: map['name']?.toString() ?? '',
+      type: map['type']?.toString() ?? '',
+      value: map['value']?.toString() ?? '',
     );
   }
 
   ///
   factory PaymentTaxResponse.fromJson(String source) =>
-      PaymentTaxResponse.fromMap(json.decode(source));
+      PaymentTaxResponse.fromMap(json.decode(source) as Map<String, dynamic>);
 
   ///
   final num amount;
@@ -388,32 +392,36 @@ class PaymentRefundResponse extends Equatable {
   ///
   const PaymentRefundResponse({
     required this.id,
-    this.type = 'refund',
     required this.attributes,
     required this.availableAt,
     required this.createdAt,
     required this.paidAt,
     required this.updatedAt,
+    this.type = 'refund',
   });
 
   ///
   factory PaymentRefundResponse.fromMap(Map<String, dynamic> map) {
     return PaymentRefundResponse(
-      id: map['id'] ?? '',
-      type: map['type'] ?? 'refund',
-      attributes: PaymentRefundResponseAttributes.fromMap(map['attributes']),
+      id: map['id']?.toString() ?? '',
+      type: map['type']?.toString() ?? 'refund',
+      attributes: PaymentRefundResponseAttributes.fromMap(
+        map['attributes'] as Map<String, dynamic>,
+      ),
       availableAt: map['available_at'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['available_at'])
+          ? DateTime.fromMillisecondsSinceEpoch(map['available_at'] as int)
           : null,
-      createdAt: fromTimeStamp(map['created_at']),
-      updatedAt: fromTimeStamp(map['updated_at']),
-      paidAt: fromTimeStamp(map['paid_at']),
+      createdAt: fromTimeStamp(map['created_at'] as int),
+      updatedAt: fromTimeStamp(map['updated_at'] as int),
+      paidAt: fromTimeStamp(map['paid_at'] as int),
     );
   }
 
   ///
   factory PaymentRefundResponse.fromJson(String source) =>
-      PaymentRefundResponse.fromMap(json.decode(source));
+      PaymentRefundResponse.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   ///
   final String id;
@@ -498,7 +506,6 @@ class PaymentRefundResponseAttributes extends Equatable {
     required this.balanceTransactionId,
     required this.currency,
     required this.livemode,
-    this.metadata,
     required this.notes,
     required this.paymentId,
     required this.payoutId,
@@ -507,30 +514,34 @@ class PaymentRefundResponseAttributes extends Equatable {
     required this.availableAt,
     required this.createdAt,
     required this.updatedAt,
+    this.metadata,
   });
 
   ///
   factory PaymentRefundResponseAttributes.fromJson(String source) =>
-      PaymentRefundResponseAttributes.fromMap(json.decode(source));
+      PaymentRefundResponseAttributes.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   ///
   factory PaymentRefundResponseAttributes.fromMap(Map<String, dynamic> map) {
     return PaymentRefundResponseAttributes(
-      amount: map['amount'] ?? 0,
-      balanceTransactionId: map['balance_transaction_id'] ?? '',
-      currency: map['currency'] ?? 'PHP',
-      livemode: map['livemode'] ?? false,
+      amount: (map['amount'] as num?)?.toInt() ?? 0,
+      balanceTransactionId: map['balance_transaction_id']?.toString() ?? '',
+      currency: map['currency']?.toString() ?? 'PHP',
+      livemode: map['livemode'] as bool? ?? false,
       metadata: map['metadata'] != null
-          ? Map<String, dynamic>.from(map['metadata'])
+          ? Map<String, dynamic>.from(map['metadata'] as Map<String, dynamic>)
           : null,
-      notes: map['notes'] ?? '',
-      paymentId: map['payment_id'] ?? '',
-      payoutId: map['payout_id'] ?? '',
-      reason: map['reason'] ?? '',
-      status: map['status'] ?? '',
-      availableAt: DateTime.fromMillisecondsSinceEpoch(map['available_at']),
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at']),
-      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updated_at']),
+      notes: map['notes']?.toString() ?? '',
+      paymentId: map['payment_id']?.toString() ?? '',
+      payoutId: map['payout_id']?.toString() ?? '',
+      reason: map['reason']?.toString() ?? '',
+      status: map['status']?.toString() ?? '',
+      availableAt:
+          DateTime.fromMillisecondsSinceEpoch(map['available_at'] as int),
+      createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at'] as int),
+      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updated_at'] as int),
     );
   }
 

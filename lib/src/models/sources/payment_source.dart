@@ -16,17 +16,19 @@ class PaymentAttributeSourceResponse extends Equatable {
   ///
   factory PaymentAttributeSourceResponse.fromMap(Map<String, dynamic> map) {
     return PaymentAttributeSourceResponse(
-      id: map['id'] ?? '',
-      type: map['type'] ?? '',
-      brand: map['brand'] ?? '',
-      country: map['country'] ?? '',
-      last4: map['last4'] ?? '',
+      id: map['id']?.toString() ?? '',
+      type: map['type']?.toString() ?? '',
+      brand: map['brand']?.toString() ?? '',
+      country: map['country']?.toString() ?? '',
+      last4: map['last4']?.toString() ?? '',
     );
   }
 
   ///
   factory PaymentAttributeSourceResponse.fromJson(String source) =>
-      PaymentAttributeSourceResponse.fromMap(json.decode(source));
+      PaymentAttributeSourceResponse.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   ///
   final String id;
