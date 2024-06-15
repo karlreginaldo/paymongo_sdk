@@ -6,13 +6,13 @@ import 'package:paymongo_sdk/paymongo_sdk.dart';
 /// source response
 class SourceAttributes extends Equatable {
   ///
-  const SourceAttributes({
-    required this.type,
-    required this.amount,
-    required this.redirect,
-    required this.billing,
-    this.currency = 'PHP',
-  });
+  const SourceAttributes(
+      {required this.type,
+      required this.amount,
+      required this.redirect,
+      required this.billing,
+      this.currency = 'PHP',
+      this.metadata});
 
   ///
   factory SourceAttributes.fromMap(Map<String, dynamic> map) {
@@ -21,7 +21,10 @@ class SourceAttributes extends Equatable {
       amount: (map['amount'] as num).toDouble(),
       currency: map['currency']?.toString() ?? '',
       redirect: Redirect.fromMap(map['redirect'] as Map<String, dynamic>),
-      billing: PayMongoBilling.fromMap(map['billing'] as Map<String, dynamic>),
+      billing: map['billing'] != null
+          ? PayMongoBilling.fromMap(map['billing'] as Map<String, dynamic>)
+          : null,
+      metadata: map['metdata'] as Map<String, dynamic>?,
     );
   }
 
@@ -42,7 +45,9 @@ class SourceAttributes extends Equatable {
   final Redirect redirect;
 
   ///
-  final PayMongoBilling billing;
+  final PayMongoBilling? billing;
+
+  final Map<String, dynamic>? metadata;
 
   ///
   SourceAttributes copyWith({
@@ -68,7 +73,8 @@ class SourceAttributes extends Equatable {
       'amount': amount.toCurrency(),
       'currency': currency,
       'redirect': redirect.toMap(),
-      'billing': billing.toMap(),
+      'billing': billing?.toMap(),
+      'metadata': metadata,
     };
   }
 
@@ -76,13 +82,14 @@ class SourceAttributes extends Equatable {
   String toJson() => json.encode(toMap());
 
   @override
-  List<Object> get props {
+  List<Object?> get props {
     return [
       type,
       amount,
       currency,
       redirect,
       billing,
+      metadata,
     ];
   }
 }
